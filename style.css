@@ -1,0 +1,420 @@
+@import url('http://fonts.cdnfonts.com/css/tetris');
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500&display=swap');
+* {
+	box-sizing: border-box;
+}
+
+.noselect {
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+html,
+body {
+	height: 100%;
+}
+
+html body {
+	align-items: center;
+	background-color: #404040;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin: 0;
+	font-family: 'Baloo 2', cursive;
+}
+
+.con-tainer {
+	display: flex;
+	column-gap: 1em;
+	flex-wrap: wrap;
+	//margin-top: -138px;
+}
+
+#preview,
+#board {
+	background-color: #1e1e1e;
+	color: white;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+#preview {
+	margin-bottom: 1em;
+}
+
+
+/* STARTSCREEN */
+
+#startscreen {
+	background-color: #1e1e1e;
+	color: #fff;
+	width: 300px;
+	height: 600px;
+	position: absolute;
+}
+
+#startscreen img {
+	max-width: 100%;
+	margin-bottom: 1em;
+}
+
+#startscreen p {
+	margin-bottom: 0.5em;
+	font-size: .8em;
+	text-align: left;
+}
+
+#startscreen span {
+	color: lime;
+}
+
+h1 {
+	font-family: 'Tetris', sans-serif;
+	font-size: 1.5em;
+}
+
+#startscreen .inner {
+	font-size: 1.5em;
+	text-align: center;
+	width: 80%;
+	margin: 2em auto;
+	height: 100%;
+}
+
+
+/* STARTSCREEN --- END */
+
+
+/* SIDEBAR LEFT*/
+
+#sidebar-left {
+	margin-top: 138px;
+	display: flex;
+	flex-direction: column;
+	row-gap: 1em;
+}
+
+#sidebar-left>button {
+	align-self: flex-end;
+	height: 30px;
+	width: 30px;
+}
+
+#sidebar-left>button:hover {
+	background-size: 80%;
+}
+
+#sidebar-left>button:hover>svg {
+	font-size: 1.25em;
+}
+
+button#previewBtn {
+	padding-left: .45em;
+}
+
+button#previewBtn:hover {
+	padding-left: .3em;
+}
+
+button#ghostPieceBtn,
+button#toggleGridBtn {
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 60%;
+}
+
+button#ghostPieceBtn {
+	background-image: url(./media/ghost.png);
+}
+
+button#toggleGridBtn {
+	background-image: url(./media/grid.png);
+}
+
+#sidebar-left,
+#sidebar-right {
+	width: 80px;
+}
+
+
+.tenTten .gm-icon {
+	display: none;
+}
+
+.tenTten #sidebar-right {
+	margin-top: auto;
+}
+
+/* SIDEBAR LEFT --- END*/
+
+
+/* SIDEBAR RIGHT */
+
+#sidebar-right {
+	margin-top: 138px;
+	color: white;
+	display: flex;
+	flex-direction: column;
+	row-gap: .75em;
+	width: 80px;
+}
+
+.game-data>div {
+	border: 1px solid;
+	margin-bottom: 1em;
+	padding: 0.25em;
+	position: relative;
+	text-align: center;
+}
+
+.game-data>div:last-child {
+	margin-bottom: .5em;
+}
+
+.game-data>div>div {
+	font-size: 1.1em;
+	text-align: center;
+	margin-top: .5em;
+}
+
+.con-tainer button {
+	background-color: white;
+	border: 1px solid white;
+	border-radius: 3px;
+	color: black;
+	font-size: .8em;
+	line-height: .9em;
+	padding: .5em;
+	width: 100%;
+}
+
+#sidebar-right button:hover {
+	background-color: black;
+	color: white;
+}
+
+button#levelUp {
+	font-size: 1em;
+	margin-top: 0.25em;
+	padding: 4px;
+}
+
+.label {
+	background-color: #404040;
+	color: white;
+	left: 50%;
+	margin: 0;
+	padding: 6px 6px 0;
+	position: absolute;
+	top: -14px;
+	transform: translateX(-50%);
+}
+
+
+/* SIDEBAR RIGHT --- END*/
+
+#levelName {
+	left: 100%;
+	line-height: 1;
+	margin: 0 0 0 1em;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.source {
+	color: #565656;
+	left: 50%;
+	margin-top: 0.5em;
+	position: absolute;
+	text-align: center;
+	transform: translateX(-50%);
+}
+
+
+/* SCOREBOARD MODAL*/
+
+#scoresheetModal .modal-content {
+	height: 500px;
+}
+
+#highscoreModal .modal-body {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.modal-content {
+	margin-top: 100px;
+}
+
+body .modal-title {
+	font-family: 'Tetris', sans-serif;
+	font-size: 2em;
+	justify-content: center;
+	line-height: 1;
+}
+
+#board.scoreboard {
+	//display: block;
+}
+
+#scoresheetModal .modal-body {
+	height: 200px;
+}
+
+.player {
+	column-gap: 1em;
+	display: flex;
+	font-size: 1.5em;
+	justify-content: space-between;
+}
+
+.name {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+
+/* SCOREBOARD MODAL--- END*/
+
+
+/* GAME */
+
+#gameMode {
+	column-gap: 1em;
+	display: flex;
+	justify-content: space-between;
+	left: 50%;
+	position: absolute;
+	top: 1em;
+	transform: translateX(-50%);
+	width: 300px;
+}
+
+#gmSelect {
+	flex: 1;
+}
+
+.gm-icon {
+	margin-top: auto;
+}
+
+#gmIcon {
+	align-items: end;
+	background-position: top center;
+	background-repeat: no-repeat;
+	background-size: 50%;
+	display: flex;
+	height: 80px;
+	justify-content: center;
+	padding: .2em;
+	width: 80px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+#gmName {
+	text-align: center;
+	line-height: .5;
+}
+
+#preview>div,
+#board.playing>div {
+	align-items: center;
+	//border: 1px solid lightgrey;
+	display: flex;
+	flex-wrap: wrap;
+	font-size: .8em;
+	height: 30px;
+	justify-content: center;
+	width: 30px;
+}
+
+.grid #board.playing > div {
+	border: 1px solid rgb(233 233 233 / 5%);
+}
+
+.grid #board.playing > .p,
+.grid #board.playing > .occ {
+	border: none;
+}
+
+.p,
+.occ,
+.shadow-p {
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.occ {
+	background-color: darkgrey;
+	border-color: azure;
+}
+
+.shadow-p {
+	opacity: .15;
+}
+
+.p {
+	opacity: 1;
+}
+
+.i-piece,
+.i-piece-ded {
+	background-image: url(./media/pieceskins/iblock.jpg);
+}
+
+.j-piece,
+.j-piece-ded {
+	background-image: url(./media/pieceskins/jblock.jpg);
+}
+
+.l-piece,
+.l-piece-ded {
+	background-image: url(./media/pieceskins/lblock.jpg);
+}
+
+.t-piece,
+.t-piece-ded {
+	background-image: url(./media/pieceskins/tblock.jpg);
+}
+
+.o-piece,
+.o-piece-ded {
+	background-image: url(./media/pieceskins/oblock.jpg);
+}
+
+.z-piece,
+.z-piece-ded {
+	background-image: url(./media/pieceskins/zblock.jpg);
+}
+
+.s-piece,
+.s-piece-ded {
+	background-image: url(./media/pieceskins/sblock.jpg);
+}
+
+.x-piece,
+.x-piece-ded {
+	background-image: url(./media/pieceskins/sblock.jpg);
+}
+
+.y-piece,
+.y-piece-ded {
+	background-image: url(./media/pieceskins/tblock.jpg);
+}
+
+.one-piece,
+.one-piece-ded {
+	background-image: url(./media/pieceskins/gato.jpg);
+	border: 1px solid white;
+}
+
+.corner-piece,
+.corner-piece-ded {
+	background-image: url(./media/pieceskins/lblock.jpg);
+}
