@@ -1,4 +1,4 @@
-const levelNames = ['Nobody','Housemouse','Couchqueen','Garnel Marnel','Tomato Thief','Local Hero','Here could be your advertisment','Selfless Hero','Boulder Queen','Ogh-Monster','Boaty McBoatface','Surfclub Member','Ogh-a-monne','Bruder Bauchi', 'Senior Pickle Inspector','Pickle Intern','Untouched','Gato','Jonas Neubauer','Lobby','Jens Lehmann','Catlike reflexes','No more funny level names','Maxed out.... not!'];
+const levelNames = ['Nobody','Aldi Ostrich','Housemouse','Couchqueen','Garnel Marnel','Tomato Thief','Local Hero','Here could be your advertisment','Selfless Hero','Boulder Queen','Ogh-Monster','Boaty McBoatface','Surfclub Member','Ogh-a-monne','Bruder Bauchi', 'Senior Pickle Inspector','Pickle Intern','Untouched','Gato','Jonas Neubauer','Lobby','Jens Lehmann','Catlike reflexes','No more funny level names','Maxed out.... not!'];
 
 
 function newPiece() {
