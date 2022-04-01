@@ -1,6 +1,3 @@
-const levelNames = ['Nobody','Aldi Ostrich','Housemouse','Couchqueen','Garnel Marnel','Tomato Thief','Local Hero','Here could be your advertisment','Selfless Hero','Boulder Queen','Ogh-Monster','Boaty McBoatface','Surfclub Member','Ogh-a-monne','Bruder Bauchi', 'Senior Pickle Inspector','Pickle Intern','Untouched','Gato','Jonas Neubauer','Lobby','Jens Lehmann','Catlike reflexes','No more funny level names','Maxed out.... not!'];
-
-
 function newPiece() {
 	if (overlap) {
 		setTimeout(gameOver, 1);
@@ -8,20 +5,20 @@ function newPiece() {
 	};
 
 	let randNr;
-	v = 0;
-	pieceMoveable = true;
+	app.status.variant = 0;
+	app.status.pieceMoveable = true;
 
-	if (nextPiece) {
-		piece = JSON.parse(JSON.stringify(nextPiece));
+	if (app.status.nextPiece) {
+		app.status.piece = JSON.parse(JSON.stringify(app.status.nextPiece));
 	} else {
 		randNr = Math.floor(Math.random() * PIECES.length);
-		piece = JSON.parse(JSON.stringify(PIECES[randNr]));
+		app.status.piece = JSON.parse(JSON.stringify(PIECES[randNr]));
 	}
 
 	updateDroughtCounter();
 
 	randNr = Math.floor(Math.random() * PIECES.length);
-	nextPiece = JSON.parse(JSON.stringify(PIECES[randNr]));
+	app.status.nextPiece = JSON.parse(JSON.stringify(PIECES[randNr]));
 
 	drawPreviewPiece();
 	drawPiece();
@@ -31,17 +28,17 @@ function newPiece() {
 function updateDroughtCounter() {
 	let droughtDisplay = document.getElementById("drought");
 
-	if (piece.type !== "i-piece") {
-		droughtCounter++;
-		if (droughtCounter > 20) {
+	if (app.status.piece.type !== "i-piece") {
+		app.score.droughtCounter++;
+		if (app.score.droughtCounter > 20) {
 			droughtDisplay.style.color = "orange";
 		}
-		if (droughtCounter > 30) {
+		if (app.score.droughtCounter > 30) {
 			droughtDisplay.style.color = "red";
 			droughtDisplay.style.fontSize = "2em";
 			droughtDisplay.style.marginTop = "0.25em";
 		}
-		if (droughtCounter > 50) {
+		if (app.score.droughtCounter > 50) {
 			droughtDisplay.style.color = "black";
 			droughtDisplay.style.fontSize = "5em";
 		}
@@ -50,95 +47,95 @@ function updateDroughtCounter() {
 		droughtDisplay.style.color = "white";
 		droughtDisplay.style.fontSize = "initial";
 		droughtDisplay.style.marginTop = "0.5em";
-		droughtCounter = 0;
+		app.score.droughtCounter = 0;
 	}
 
-	droughtDisplay.textContent = droughtCounter;
+	droughtDisplay.textContent = app.score.droughtCounter;
 }
 
 function gameOver() {
-	pieceMoveable = false;
+	app.status.pieceMoveable = false;
 	gameoverS.play();
-	gameOn = false;
+	app.settings.gameOn = false;
 	stopTimer();
-	clearInterval(intv);
+	clearInterval(app.status.intv);
 	overlap = false;
 	scoreScreen();
 }
 
 function initGravity() {
 	if (overlap) return;
-	clearInterval(intv);
-	intv = setInterval(function () {
+	clearInterval(app.status.intv);
+	app.status.intv = setInterval(function () {
 		if (isFree('down')) {
 			move('down');
 			drawPiece();
 		} else {
 			freezePiece();
 		};
-	}, speed);
+	}, app.settings.speed);
 }
 
 function drawPiece() {
 	clearBoard();
-	for (let i in piece.geo[0]) {
-		boardCells[piece.geo[v][i]].classList.add("p");
-		boardCells[piece.geo[v][i]].classList.add(piece.type);
+	for (let i in app.status.piece.geo[0]) {
+		app.grid.boardCells[app.status.piece.geo[app.status.variant][i]].classList.add("p");
+		app.grid.boardCells[app.status.piece.geo[app.status.variant][i]].classList.add(app.status.piece.type);
 	}
 	checkForOverlap();
-	if (showGhostPiece) drawGhostPiece();
+	if (app.settings.showGhostPiece) drawGhostPiece();
 
 }
 
 function drawPreviewPiece() {
 	clearPreview();
-	for (let i in nextPiece.geo[0]) {
-		previewCells[nextPiece.geo[v][i]].classList.add("p");
-		previewCells[nextPiece.geo[v][i]].classList.add(nextPiece.type);
+	for (let i in app.status.nextPiece.geo[0]) {
+		previewCells[app.status.nextPiece.geo[app.status.variant][i]].classList.add("p");
+		previewCells[app.status.nextPiece.geo[app.status.variant][i]].classList.add(app.status.nextPiece.type);
 	}
 }
 
 function checkForOverlap() {
-	for (let i in piece.geo[0]) {
-		if (boardCells[piece.geo[v][i]].classList.contains("p") &&
-			boardCells[piece.geo[v][i]].classList.contains("occ")) {
+	for (let i in app.status.piece.geo[0]) {
+		if (app.grid.boardCells[app.status.piece.geo[app.status.variant][i]].classList.contains("p") &&
+			app.grid.boardCells[app.status.piece.geo[app.status.variant][i]].classList.contains("occ")) {
 			overlap = true;
 		}
 	}
 }
 
 function freezePiece() {
-	pieceMoveable = false;
+	app.status.pieceMoveable = false;
 	setOccClasses();
 	checkForFullRows();
-	clearInterval(intv);
+	clearInterval(app.status.intv);
 	newPiece();
 	initGravity();
 }
 
 function setOccClasses() {
-	for (let i in piece.geo[v]) {
-		boardCells[piece.geo[v][i]].classList = "occ";
-		boardCells[piece.geo[v][i]].classList.add(piece.type + '-ded');
+	for (let i in app.status.piece.geo[app.status.variant]) {
+		app.grid.boardCells[app.status.piece.geo[app.status.variant][i]].classList = "occ";
+		app.grid.boardCells[app.status.piece.geo[app.status.variant][i]].classList.add(app.status.piece.type + '-ded');
 	}
 }
 
 function addFirstRow() {
-	for (let i = 0; i < cols; i++) {
+	for (let i = 0; i < app.grid.cols; i++) {
 		board.insertBefore(document.createElement("div"), board.firstChild);
 	}
 }
 
 function checkForFullRows() {
-	rowsCleared = 0;
-	for (let i = 0; i < rows; i++) {
-		if (boardCells.slice(cols * i, (cols * i) + cols)
+	app.score.rowsCleared = 0;
+	for (let i = 0; i < app.grid.rows; i++) {
+		if (app.grid.boardCells.slice(app.grid.cols * i, (app.grid.cols * i) + app.grid.cols)
 			.every(x => x.classList.contains("occ"))) {
-			rowsCleared++;
+			app.score.rowsCleared++;
 
-			for (let j = cols-1; j >= 0; j--) {
-				boardCells[(i * cols) + j].classList.add('special');
-				board.removeChild(board.childNodes[(i * cols) + j]);
+			for (let j = app.grid.cols - 1; j >= 0; j--) {
+				app.grid.boardCells[(i * app.grid.cols) + j].classList.add('special');
+				board.removeChild(board.childNodes[(i * app.grid.cols) + j]);
 			}
 
 			updateLines();
@@ -149,53 +146,52 @@ function checkForFullRows() {
 	}
 	calculatePoints();
 	updatePoints();
-	//console.log('rows cleared: ' + rowsCleared);
 }
 
 function drawGhostPiece() {
-	let ghostPiece = JSON.parse(JSON.stringify(piece));
+	let ghostPiece = JSON.parse(JSON.stringify(app.status.piece));
 	let arr = [];
-	for (let i in piece.geo[v]) {
+	for (let i in app.status.piece.geo[app.status.variant]) {
 		let counter = 0;
-		let r = cols;
+		let r = app.grid.cols;
 
 		while (
-			piece.geo[v][i] + r <= (cols*rows-cols + Number(String(piece.geo[v][i]).slice(-1))) &&
-			!boardCells[piece.geo[v][i] + r].classList.contains("occ")
+			app.status.piece.geo[app.status.variant][i] + r <= (app.grid.cols * app.grid.rows - app.grid.cols + Number(String(app.status.piece.geo[app.status.variant][i]).slice(-1))) &&
+			!app.grid.boardCells[app.status.piece.geo[app.status.variant][i] + r].classList.contains("occ")
 		) {
 			counter++;
-			r += cols;
+			r += app.grid.cols;
 		}
 		arr.push(counter);
 	}
 	let dist = Math.min(...arr);
 
-	ghostPiece.geo[v] = ghostPiece.geo[v].map(x => x += (dist * cols))
+	ghostPiece.geo[app.status.variant] = ghostPiece.geo[app.status.variant].map(x => x += (dist * app.grid.cols))
 
 	//clearPreview();
 	for (let i in ghostPiece.geo[0]) {
-		boardCells[ghostPiece.geo[v][i]].classList.add("shadow-p");
-		boardCells[ghostPiece.geo[v][i]].classList.add(ghostPiece.type);
+		app.grid.boardCells[ghostPiece.geo[app.status.variant][i]].classList.add("shadow-p");
+		app.grid.boardCells[ghostPiece.geo[app.status.variant][i]].classList.add(ghostPiece.type);
 	}
 }
 
 // POINTS & STUFF
 
 function calculatePoints() {
-	if (rowsCleared) {
-		if (rowsCleared < 4) playSound(lineclearS);
-		if (rowsCleared === 4) {
+	if (app.score.rowsCleared) {
+		if (app.score.rowsCleared < 4) playSound(lineclearS);
+		if (app.score.rowsCleared === 4) {
 			playSound(tetrisS);
-			tetrisCount++;
+			app.score.tetrisCount++;
 		}
 		updateTRT();
-		points += rowsCleared * rowsCleared * 10;
+		app.score.points += app.score.rowsCleared * app.score.rowsCleared * 10;
 	}
 }
 
 function updatePoints() {
-	document.getElementById('points').textContent = points;
-	if (points >= (level + 1) * 300) {
+	document.getElementById('points').textContent = app.score.points;
+	if (app.score.points >= (app.status.level + 1) * 300) {
 		levelUp();
 		playSound(levelupS);
 		initGravity();
@@ -203,29 +199,29 @@ function updatePoints() {
 }
 
 function calcSpeed() {
-	if (level < 14) speed = startingSpeed - level * 100;
-	if (level > 14) speed -= 5;
+	if (level < 14) app.settings.speed = app.settings.startingSpeed - app.status.level * 100;
+	if (app.status.level > 14) app.settings.speed -= 5;
 }
 
 function updateLevel() {
-	document.getElementById('level').textContent = level;
-	levelName.textContent = levelNames[level];
+	document.getElementById('level').textContent = app.status.level;
+	levelName.textContent = app.status.levelNames[app.status.level];
 	calcSpeed();
 }
 
 function updateLines() {
-	totalLines++;
-	document.getElementById('lines').textContent = totalLines;
+	app.score.totalLines++;
+	document.getElementById('lines').textContent = app.score.totalLines;
 }
 
 function updateTRT() {
-	rowClears++;
-	let trt = Math.floor((tetrisCount * 100) / rowClears);
+	app.score.rowClears++;
+	let trt = Math.floor((app.score.tetrisCount * 100) / app.score.rowClears);
 	document.getElementById('trt').textContent = trt + "%";
 }
 
 function levelUp() {
-	level++;
+	app.status.level++;
 	updateLevel();
 	initGravity();
 }
@@ -250,19 +246,19 @@ function clearPreview() {
 }
 
 function clearBoard() {
-	for (let i in boardCells) {
-		boardCells[i].classList.remove("p");
-		boardCells[i].classList.remove("i-piece");
-		boardCells[i].classList.remove("j-piece");
-		boardCells[i].classList.remove("t-piece");
-		boardCells[i].classList.remove("l-piece");
-		boardCells[i].classList.remove("o-piece");
-		boardCells[i].classList.remove("z-piece");
-		boardCells[i].classList.remove("s-piece");
-		boardCells[i].classList.remove("x-piece");
-		boardCells[i].classList.remove("y-piece");
-		boardCells[i].classList.remove("one-piece");
-		boardCells[i].classList.remove("corner-piece");
-		boardCells[i].classList.remove("shadow-p");
+	for (let i in app.grid.boardCells) {
+		app.grid.boardCells[i].classList.remove("p");
+		app.grid.boardCells[i].classList.remove("i-piece");
+		app.grid.boardCells[i].classList.remove("j-piece");
+		app.grid.boardCells[i].classList.remove("t-piece");
+		app.grid.boardCells[i].classList.remove("l-piece");
+		app.grid.boardCells[i].classList.remove("o-piece");
+		app.grid.boardCells[i].classList.remove("z-piece");
+		app.grid.boardCells[i].classList.remove("s-piece");
+		app.grid.boardCells[i].classList.remove("x-piece");
+		app.grid.boardCells[i].classList.remove("y-piece");
+		app.grid.boardCells[i].classList.remove("one-piece");
+		app.grid.boardCells[i].classList.remove("corner-piece");
+		app.grid.boardCells[i].classList.remove("shadow-p");
 	}
 }

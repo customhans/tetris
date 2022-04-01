@@ -6,21 +6,21 @@ function initGameMode() {
 	gameMode = gmSelect.value;
 	gmName.textContent = gameMode;
 	if (gameMode === "normal") {
-		rows = 20;
+		app.grid.rows = 20;
 		gmNormal();
 		document.body.classList = "noselect";
 		gmIcon.style.backgroundImage = "url()";
 	}
 
 	if (gameMode === "bazillus") {
-		rows = 20;
+		app.grid.rows = 20;
 		gmBazillus();
 		document.body.classList = "noselect";
 		gmIcon.style.backgroundImage = "url(/media/bazillus.png)";
 	}
 	
 	if (gameMode === "tenTten") {
-		rows = 10;
+		app.grid.rows = 10;
 		document.body.classList.add("tenTten");
 	}
 	stopTimer();

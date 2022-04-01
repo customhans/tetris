@@ -9,7 +9,7 @@ function initSounds() {
 }
 
 function playSound(type) {
-	if (soundOn && gameOn) {
+	if (app.settings.soundOn && app.settings.gameOn) {
 		type.pause();
 		type.currentTime = 0;
 		type.play();
@@ -17,20 +17,20 @@ function playSound(type) {
 }
 
 function pauseHandler() {
-	if (!paused) pauseGame();
+	if (!app.status.paused) pauseGame();
 	else resumeGame();
 }
 
 function pauseGame() {
-	paused = true;
-	clearInterval(intv);
+	app.status.paused = true;
+	clearInterval(app.status.intv);
 	pauseBtn.innerHTML = "<i class='fas fa-play'></i>";
 	stopTimer();
 	window.removeEventListener("keydown", ctrl);
 }
 
 function resumeGame() {
-	paused = false;
+	app.status.paused = false;
 	initGravity();
 	pauseBtn.innerHTML = "<i class='fas fa-pause'></i>";
 	startTimer();

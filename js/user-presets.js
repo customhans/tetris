@@ -6,23 +6,23 @@ let tgBtn = document.getElementById('toggleGridBtn');
 let gridRef = document.querySelector(".con-tainer");
 
 function toggleVolume() {
-	if (soundOn) {
-		soundOn = false;
+	if (app.settings.soundOn) {
+		app.settings.soundOn = false;
 		tvBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
 	} else {
-		soundOn = true;
+		app.settings.soundOn = true;
 		tvBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
 	}
 	saveSoundSettings();
 }
 
 function togglePreview() {
-	if (showPreview) {
-		showPreview = false;
+	if (app.settings.showPreview) {
+		app.settings.showPreview = false;
 		tpPrev.style.opacity = 0;
 		tpPrevBtn.innerHTML = '<i class="fa fa-eye-slash"></i>';
 	} else {
-		showPreview = true;
+		app.settings.showPreview = true;
 		tpPrev.style.opacity = 0.5;
 		tpPrevBtn.innerHTML = '<i class="fa fa-eye"></i>';
 	}
@@ -30,12 +30,12 @@ function togglePreview() {
 }
 
 function toggleGhostPiece() {
-	if (showGhostPiece) {
-		showGhostPiece = false;
+	if (app.settings.showGhostPiece) {
+		app.settings.showGhostPiece = false;
 		drawPiece();
 		tgpBtn.style.backgroundImage = "url(./media/no-ghost.png)"
 	} else {
-		showGhostPiece = true;
+		app.settings.showGhostPiece = true;
 		drawPiece();
 		tgpBtn.style.backgroundImage = "url(./media/ghost.png)"
 	}
@@ -43,12 +43,12 @@ function toggleGhostPiece() {
 }
 
 function toggleGrid() {
-	if (showGrid) {
-		showGrid = false;
+	if (app.settings.showGrid) {
+		app.settings.showGrid = false;
 		tgBtn.style.backgroundImage = "url(./media/no-grid.png)";
 		gridRef.classList.remove("grid");
 	} else {
-		showGrid = true;
+		app.settings.showGrid = true;
 		tgBtn.style.backgroundImage = "url(./media/grid.png)";
 		gridRef.classList.add("grid");
 	}
@@ -56,33 +56,33 @@ function toggleGrid() {
 }
 
 function saveSoundSettings() {
-	localStorage.setItem("soundState", soundOn);
+	localStorage.setItem("soundState", app.settings.soundOn);
 }
 
 
 function savePreviewSettings() {
-		localStorage.setItem("previewState", showPreview);
+		localStorage.setItem("previewState", app.settings.showPreview);
 }
 
 function saveGhostPieceSettings() {
-		localStorage.setItem("ghostPieceState", showGhostPiece);
+		localStorage.setItem("ghostPieceState", app.settings.showGhostPiece);
 }
 
 function saveGridSettings() {
-		localStorage.setItem("gridState", showGrid);
+		localStorage.setItem("gridState", app.settings.showGrid);
 }
 
 
 
 function getUserPresets() {
 	// Sound
-	soundOn = (localStorage.soundState === "true");
-	if (soundOn) tvBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+	app.settings.soundOn = (localStorage.soundState === "true");
+	if (app.settings.soundOn) tvBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
 	else tvBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
 
 	// Preview
-	showPreview = (localStorage.previewState === "true");
-	if (showPreview) {
+	app.settings.showPreview = (localStorage.previewState === "true");
+	if (app.settings.showPreview) {
 		tpPrev.style.opacity = 0.5;
 		tpPrevBtn.innerHTML = '<i class="fa fa-eye"></i>';
 	} else {
@@ -92,8 +92,8 @@ function getUserPresets() {
 	
 
 	// Ghost Piece
-	showGhostPiece = (localStorage.ghostPieceState === "true");
-	if (showGhostPiece) {
+	app.settings.showGhostPiece = (localStorage.ghostPieceState === "true");
+	if (app.settings.showGhostPiece) {
 		//drawPiece();
 		tgpBtn.style.backgroundImage = "url(./media/ghost.png)"
 	} else {
@@ -102,8 +102,8 @@ function getUserPresets() {
 	}
 
 	// Grid
-	showGrid = (localStorage.gridState === "true");
-	if (showGrid) {
+	app.settings.showGrid = (localStorage.gridState === "true");
+	if (app.settings.showGrid) {
 		//drawPiece();
 		tgBtn.style.backgroundImage = "url(./media/grid.png)";
 		gridRef.classList.add("grid");

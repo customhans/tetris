@@ -1,14 +1,11 @@
-let cols = 10;
-let rows = 20;
-let cellLength = 30;
-let board = document.getElementById('board'), boardCells, clear, droughtCounter, gameOn, gameover, intv, level, levelName, nextPiece, paused, piece, pieceMoveable, points, pauseBtn, previewCells, rowsCleared, rowClears, scoreUnit, showGhostPiece, showGrid, showPreview, soundOn, speed, startingSpeed, success, tetrisCount, totalLines = 0, v = 0;
+let board = document.getElementById('board'), clear, pauseBtn, previewCells;
 
 window.onload = function () {
 	let gmSelect = document.getElementById("gmSelect").onchange = initGameMode;
-	scoreUnit = JSON.parse(localStorage.getItem("Scores")) || [];
+	app.score.scoreUnit = JSON.parse(localStorage.getItem("Scores")) || [];
 	getDummyScores();
 	document.addEventListener('visibilitychange', function () {
-		if(gameOn) pauseHandler();
+		if(app.settings.gameOn) pauseHandler();
 	});
 	config();
 	startScreen();
@@ -16,16 +13,16 @@ window.onload = function () {
 }
 
 function config() {
-	gameOn = false;
-	speed = startingSpeed = 1500;
+	// gameOn = false;
+	// speed = startingSpeed = 1500;
 	getUserPresets();
 	gmNormal(); // default game mode "normal"
 }
 
 function startScreen() {
 	createPreviewArea();
-	board.style.width = cols * cellLength + 'px';
-	board.style.height = rows * cellLength + 'px';
+	board.style.width = app.grid.cols * app.grid.cellLength + 'px';
+	board.style.height = app.grid.rows * app.grid.cellLength + 'px';
 	levelName = document.getElementById('levelName');
 	window.addEventListener('keydown', setStage);
 }
@@ -33,7 +30,7 @@ function startScreen() {
 
 function setStage() {
 	document.getElementById('startscreen').style.display = "none";
-	if (intv) clearInterval(intv);
+	if (app.status.intv) clearInterval(app.status.intv);
 	clearTimer();
 	window.removeEventListener("keydown", setStage);
 	levelName.textContent = "";
@@ -51,7 +48,7 @@ function setStage() {
 }
 
 function resetAchievments() {
-	level = totalLines = points = droughtCounter = tetrisCount = rowClears = 0;
+	app.status.level = app.score.totalLines = app.score.points = app.score.droughtCounter = app.score.tetrisCount = app.score.rowClears = 0;
 	document.getElementById("level").textContent = 0;
 	document.getElementById("lines").textContent = 0;
 	document.getElementById("points").textContent = 0;
@@ -61,21 +58,18 @@ function resetAchievments() {
 
 
 function fillCells() {
-	for (let i = 0; i < cols * rows; i++) {
+	for (let i = 0; i < app.grid.cols * app.grid.rows; i++) {
 		//board.innerHTML += '<div>' + i + '</div>';
 		board.innerHTML += '<div></div>';
 	}
 }
 
 function indexCells() {
-	boardCells = Array.from(document.querySelectorAll('#board > div'));
-	for (let i = 0; i < cols * rows; i++) {
-		//boardCells[i].innerText = i;
-	}
+	app.grid.boardCells = Array.from(document.querySelectorAll('#board > div'));
 }
 
 function startGame() {
-	gameOn = true;
+	app.settings.gameOn = true;
 	updateLevel();
 	initSounds();
 	newPiece();

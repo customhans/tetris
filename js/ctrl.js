@@ -3,7 +3,7 @@ window.addEventListener('keydown', ctrl, false);
 let overlap = false;
 
 var ctrl = function() {
-	if(pieceMoveable) {
+	if(app.status.pieceMoveable) {
 
 			if (event.defaultPrevented) {
 			return; // Do nothing if the event was already processed
@@ -28,11 +28,11 @@ var ctrl = function() {
 			break;
 
 		case "ArrowLeft":
-			if (isFree('left'))		move('left');
+			if (isFree('left')) move('left');
 			break;
 
 		case "ArrowRight":
-			if (isFree('right'))	move('right');
+			if (isFree('right')) move('right');
 			break;
 
 		case " ":
@@ -40,7 +40,6 @@ var ctrl = function() {
 			playSound(harddropS);
 			break;
 	}
-		console.log(v);
 	checkForOverlap();
 	drawPiece();
 
@@ -51,16 +50,16 @@ var ctrl = function() {
 
 
 function rotate(direction) {
-	if(direction === "clockwise") v < 3 ? v++ : v = 0;
-	if(direction === "counterclockwise") v > 0 ? v-- : v = 3;
+	if(direction === "clockwise") app.status.variant < 3 ? app.status.variant++ : app.status.variant = 0;
+	if(direction === "counterclockwise") app.status.variant > 0 ? app.status.variant-- : app.status.variant = 3;
 }
 
 function move(dir) {
-	for (let i in piece.geo) {
-		for (let j in piece.geo[i]) {
-			if (dir == 'down')  piece.geo[i][j] += cols;
-			if (dir == 'left')  piece.geo[i][j] -=  1;
-			if (dir == 'right') piece.geo[i][j] +=  1;
+	for (let i in app.status.piece.geo) {
+		for (let j in app.status.piece.geo[i]) {
+			if (dir == 'down')  app.status.piece.geo[i][j] += app.grid.cols;
+			if (dir == 'left')  app.status.piece.geo[i][j] -=  1;
+			if (dir == 'right') app.status.piece.geo[i][j] +=  1;
 		}
 	}
 }
@@ -72,40 +71,40 @@ function isFree(where) {
 }
 
 function boardEdge(where) {
-	if (where == 'left')  return piece.geo[v].some(x => x % 10 == 0);
-	if (where == 'right') return piece.geo[v].some(x => (x + 1) % cols == 0);
-	if (where == 'down')  return piece.geo[v].some(x => x >= cols * (rows - 1));
+	if (where == 'left')  return app.status.piece.geo[app.status.variant].some(x => x % 10 == 0);
+	if (where == 'right') return app.status.piece.geo[app.status.variant].some(x => (x + 1) % app.grid.cols == 0);
+	if (where == 'down')  return app.status.piece.geo[app.status.variant].some(x => x >= app.grid.cols * (app.grid.rows - 1));
 }
 
 function fullCell(where) {
-	for (let i in piece.geo[v]) {
-		if (where == 'left')  if (boardCells[piece.geo[v][i] -  1].classList.contains("occ")) return true;
-		if (where == 'right') if (boardCells[piece.geo[v][i] +  1].classList.contains("occ")) return true;
-		if (where == 'down')  if (boardCells[piece.geo[v][i] + 10].classList.contains("occ")) return true;
+	for (let i in app.status.piece.geo[app.status.variant]) {
+		if (where == 'left')  if (app.grid.boardCells[app.status.piece.geo[app.status.variant][i] -  1].classList.contains("occ")) return true;
+		if (where == 'right') if (app.grid.boardCells[app.status.piece.geo[app.status.variant][i] +  1].classList.contains("occ")) return true;
+		if (where == 'down')  if (app.grid.boardCells[app.status.piece.geo[app.status.variant][i] + 10].classList.contains("occ")) return true;
 	}
 }
 
 function rotationCheck1() {
-	let v2 = v;
+	let v2 = app.status.variant;
 	if (v2 == 3) v2 = -1;
-	for (let i = 0; i < piece.geo[v].length; i++) {
-		if (boardCells[piece.geo[v2+1][i]].classList.contains("occ")) return false;
+	for (let i = 0; i < app.status.piece.geo[app.status.variant].length; i++) {
+		if (app.grid.boardCells[app.status.piece.geo[v2 + 1][i]].classList.contains("occ")) return false;
 	}
 	return true;
 }
 
 function rotationCheck2() {
-	let v2 = v;
+	let v2 = app.status.variant;
 	if (v2 == 3) v2 = -1;
-	return	piece.geo[v2+1].some(x => (x+1) % 10 == 0) &&
-					piece.geo[v2+1].some(x => (x) % 10 == 0) ? false : true;
+	return	app.status.piece.geo[v2 + 1].some(x => (x+1) % 10 == 0) &&
+					app.status.piece.geo[v2 + 1].some(x => (x) % 10 == 0) ? false : true;
 }
 
 function dropIt() {
 	while(isFree('down')) {
-		for (let i in piece.geo) {
-			for (let j in piece.geo[i]) {
-				piece.geo[i][j] += cols;
+		for (let i in app.status.piece.geo) {
+			for (let j in app.status.piece.geo[i]) {
+				app.status.piece.geo[i][j] += app.grid.cols;
 			}
 		}
 	}
